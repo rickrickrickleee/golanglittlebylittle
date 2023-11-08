@@ -17,6 +17,11 @@ https://go.dev/tour/welcome/1
 riri ：每天一小时，2周学完A tour of go
 
 #学习打卡
-[] 20231102
+
 星星：
 riri: 
+Day4 - 08112023 
+
+# Todo
+
+[] 希望找到讲解GO 指针的视频
