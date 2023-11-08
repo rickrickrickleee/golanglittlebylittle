@@ -19,4 +19,9 @@ riri ：每天一小时，2周学完A tour of go
 #学习打卡
 [] 20231102
 星星：
-riri: 
+
+riri: Day4
+
+# Todo
+
+[] 希望找到讲解GO 指针的视频
