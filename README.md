@@ -17,10 +17,10 @@ https://go.dev/tour/welcome/1
 riri ：每天一小时，2周学完A tour of go
 
 #学习打卡
-[] 20231102
-星星：
 
-riri: Day4
+星星：
+riri: 
+Day4 - 08112023 
 
 # Todo
 
