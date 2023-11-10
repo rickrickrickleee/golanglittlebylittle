@@ -482,3 +482,242 @@ func main(){
 
 如果 r1 的值被改变了，那么这个值的所有引用都会指向被修改后的内容，在这个例子中，r2 也会受到影响。
 
+# Day5 使用 := 赋值操作符
+
+变量的初始化时省略变量的类型而由系统自动推断，
+声明语句写上 var 关键字其实是显得有些多余了，
+因此我们可以将它们简写为 a := 50 或 b := false。
+
+a 和 b 的类型（int 和 bool）将由编译器自动推断。
+
+这是使用变量的首选形式，
+但是它只能被用在函数体内，
+不可以用于全局变量的声明与赋值
+使用操作符 := 可以高效地创建一个新的变量，称之为初始化声明。
+
+注意事项
+
+不可以再次对于相同名称的变量使用初始化声明，
+例如：a := 20 就是不被允许的
+，编译器会提示错误 no new variables on left side of :=，
+但是 a = 20 是可以的，因为这是给相同的变量赋予一个新的值。
+
+你声明了一个局部变量却没有在相同的代码块中使用它，
+同样会得到编译错误，例如下面这个例子当中的变量 a：
+
+package main
+
+import "fmt"
+
+func main() {
+   var a string = "abc"
+   fmt.Println("hello, world")
+}
+
+尝试编译这段代码将得到错误 a declared but not used。
+单纯地给 a 赋值也是不够的，
+**这个值必须被使用，所以使用**
+
+fmt.Println("hello, world", a)
+
+会移除错误。
+
+**但是全局变量是允许声明但不使用的。 **
+
+同一类型的**多个变量**可以声明在同一行，如：
+var a, b, c int
+
+ 并行 或 同时 赋值
+多变量可以在同一行进行赋值，如：
+var a, b int
+var c string
+** a, b, c = 5, 7, "abc" **
+
+想要交换两个变量的值，则可以简单地使用 a, b = b, a，两个变量的类型必须是相同。
+空白标识符 _ 也被用于抛弃值，如值 5 在：_, b = 5, 7 中被抛弃。
+
+_ 实际上是一个只写变量，你不能得到它的值。这样做是因为 Go 语言中**你必须使用所有被声明的变量，**
+
+但有时你并不需要使用从一个函数得到的所有返回值。
+
+并行赋值也被用于当一个函数返回多个返回值时，
+
+比如这里的 val 和错误 err 是通过调用** Func1 **函数同时得到：val, err = Func1(var1)。
+
+
+
+空白标识符在函数返回值时的使用：
+
+package main
+
+import "fmt"
+
+func main() {
+  _,numb,strs := numbers() //只获取函数返回值的后两个
+  fmt.Println(numb,strs)
+}
+
+//一个可以返回多个值的函数
+func numbers()(int,int,string){
+  a , b , c := 1 , 2 , "str"
+  return a,b,c
+}
+
+输出结果：
+
+2 str
+
+局部变量：在函数体内声明的变量称之为局部变量，它们的作用域只在函数体内，参数和返回值变量也是局部变量。
+
+全局变量：在函数体外声明的变量称之为全局变量，全局变量可以在整个包甚至外部包（被导出后）使用。
+
+备注：
+
+1.局部变量不会一直存在，在函数被调用时存在，函数调用结束后变量就会被销毁，即生命周期。
+
+2.Go 语言程序中全局变量与局部变量名称可以相同，但是函数内的局部变量会被优先考虑。
+
+# Day5 Go 语言常量
+
+只可以是布尔型、数字型（整数型、浮点型和复数）和字符串型
+常量的定义格式：const identifier [type] = value
+
+省略类型说明符 [type]，
+显式类型定义： const b string = "abc"
+隐式类型定义： const b = "abc"
+
+多个相同类型的声明可以简写为：
+
+const c_name1, c_name2 = value1, value2
+
+package main
+
+import "fmt"
+
+func main() {
+   const LENGTH int = 10
+   const WIDTH int = 5  
+   var area int
+   const a, b, c = 1, false, "str" //多重赋值
+
+   area = LENGTH * WIDTH
+   fmt.Printf("面积为 : %d", area)
+   println()
+   println(a, b, c)  
+}
+
+面积为 : 50
+1 false str
+
+枚举
+const (
+    Unknown = 0
+    Female = 1
+    Male = 2
+)
+
+数字 0、1 和 2 分别代表未知性别、女性和男性。
+
+len(), cap(), unsafe.Sizeof()函数计算表达式的值。常量表达式中，函数必须是内置函数，否则编译不过
+package main
+
+import "unsafe"
+const (
+    a = "abc"
+    b = len(a)
+    c = unsafe.Sizeof(a)
+)
+
+func main(){
+    println(a, b, c)
+}
+
+abc 3 16
+
+## iota 特殊常量
+特殊常量，可以认为是一个可以被编译器修改的常量。
+const关键字出现时将被重置为 0(const 内部的第一行之前)，const 中每新增一行常量声明将使 iota 计数一次(iota 可理解为 const 语句块中的行索引)。
+
+iota 可以被用作枚举值：
+
+const (
+    a = iota
+    b = iota
+    c = iota
+)
+
+第一个 iota 等于 0，每当 iota 在新的一行被使用时，
+它的值都会自动加 1；
+
+所以 a=0, b=1, c=2 可以简写为如下形式：
+const (
+    a = iota
+    b
+    c
+)
+
+iota 用法
+
+package main
+
+import "fmt"
+
+func main() {
+    const (
+            a = iota   //0
+            b          //1
+            c          //2
+            d = "ha"   //独立值，iota += 1
+            e          //"ha"   iota += 1
+            f = 100    //iota +=1
+            g        **  //100  iota +=1**
+            h = iota   //7,恢复计数
+            i          //8
+    )
+    fmt.Println(a,b,c,d,e,f,g,h,i)
+}
+
+0 1 2 ha ha 100 100 7 8
+
+# 明天继续
+
+package main
+
+import "fmt"
+const (
+    i=1<<iota
+    j=3<<iota
+    k
+    l
+)
+
+func main() {
+    fmt.Println("i=",i)
+    fmt.Println("j=",j)
+    fmt.Println("k=",k)
+    fmt.Println("l=",l)
+}
+以上实例运行结果为：
+
+i= 1
+j= 6
+k= 12
+l= 24
+iota 表示从 0 开始自动加 1，所以 i=1<<0, j=3<<1（<< 表示左移的意思），即：i=1, j=6，这没问题，关键在 k 和 l，从输出结果看 k=3<<2，l=3<<3。
+
+简单表述:
+
+i=1：左移 0 位，不变仍为 1。
+j=3：左移 1 位，变为二进制 110，即 6。
+k=3：左移 2 位，变为二进制 1100，即 12。
+l=3：左移 3 位，变为二进制 11000，即 24。
+注：<<n==*(2^n)。
+
+
+
+
+
+
+
+
+
