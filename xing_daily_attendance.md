@@ -24,3 +24,29 @@
 2.用naive ui美化错误页面
 
 3.增加深浅主题切换功能
+
+### 11.9日
+
+1.nuxt中的路由处理， 跳转路由
+
+- 使用标签：<NuxtLink>  参考：https://nuxt.com.cn/docs/api/components/nuxt-link
+
+- a链接，注意避免a链接嵌套
+
+- js的方式:  navigateTo   参考：https://nuxt.com.cn/docs/api/utils/navigate-to
+
+  
+
+2.状态管理router-参数的处理 
+
+- query参数
+- params参数
+
+### 11.10日
+
+1.nuxt中composables目录内的文件函数全局化可调用，函数名必须使用use前缀才生效（17）
+
+2.解决状态管理数据因F5刷新或者右键刷新丢失的问题
+
+使用路由拦截和异步请求结合解决：在用户刷新的时候，使用路由中间件来拦截，只要刷新那个页面。都从cookie把登录缓存的uuid查询一次服务端，然后把查询出来完整的用户信息，继续写入到用户状态管理中去。
+
