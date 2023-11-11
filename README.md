@@ -28,6 +28,9 @@ Day4 - 08112023
 [] 每天上线第一件事 练习一个小小的 位运算符 
 # 闲聊板
 
+好希望自己每天上线打完卡都看一下trend
+https://github.com/trending 
+
 ri 20231111双十一：今天上线看了一会2023 Github的 Github Universe 系列讲座： 然后再开始打卡。
 看了一眼列表，除了比较人文的讲座，主题基本都是AI怎么创造生产力，2023真是AI integration universe元年啊
 涉及的仓库 OctoArcade Invaders ：https://github.com/orgs/community/discussions/8670 
@@ -40,4 +43,4 @@ https://reg.githubuniverse.com/flow/github/universe23/sessioncatalog/page/sessio
 我还是最喜欢早期那种facebook直播形式，自己也玩过QQ空间直播，但是如果让我再去习惯一个主要搞直播的平台，没有社交，还是不太习惯（不以此牟利）
 最近国内的风向是小红书的博主纷纷直播带货（b站先行一步生活区主播纷纷试水）由于需要实名认证所以个人直播还需要谨慎吧
 
-好希望自己每天上线都看一下trend
+
