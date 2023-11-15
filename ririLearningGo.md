@@ -929,3 +929,538 @@ select 语句	select 语句类似于 switch 语句，但是select会随机执行
 Go 没有三目运算符，所以不支持 ?: 形式的条件判断。
 
 # Day 7 条件语句 ALL IN
+
+## if
+
+package main
+
+import "fmt"
+
+func main () {
+
+ var a int =100;
+
+ if a <20 {
+  fmt.Printf ("a is a baaby\n");
+ }
+ else {
+  fmt.Printf("a is a adult\n ")
+ }
+ fmt.Printf("a is %d\n", a);
+}
+
+## if 语句嵌套
+package main
+
+import "fmt"
+
+func main () {
+
+var a int = 10;
+if (a<1100){
+  if (a<100){
+  fmt.Printf("a is a number baby\n");
+  }
+}
+fmt.Printf("%d\n",a);
+}
+
+### 笔记很好玩的 判断用户密码输入：
+
+package main 
+
+import"fmt"
+
+func main(){
+    var a int 
+    var b int
+    fmt.Printf("请输入密码：   \n")
+    fmt.Scan(&a)
+    if a == 5211314 {
+    fmt.Printf("请再次输入密码：")
+    fmt.Scan(&b)
+        if b == 5211314 {
+            fmt.Printf("密码正确，门锁已打开")
+        }else{
+            fmt.Printf("非法入侵，已自动报警")
+        }
+    }else{
+        fmt.Printf("非法入侵，已自动报警")
+    }
+}
+
+## switch 语句
+
+每一个 case 分支都是唯一的，
+
+switch 语句执行的过程从上至下，直到找到匹配项，匹配项后面也不需要再加 break。
+
+switch 默认情况下 case 最后自带 break 语句，匹配成功后就不会执行其他 case，
+
+如果我们需要执行后面的 case，可以使用 fallthrough 。
+
+变量 var1 可以是任何类型，类型不被局限于常量或整数，但必须是相同的类型；或者最终结果为相同类型的表达式。
+您可以同时测试多个可能符合条件的值，使用逗号分割它们，例如：case val1, val2, val3。
+switch var1 {
+    case val1:
+        ...
+    case val2:
+        ...
+    default:
+        ...
+}
+
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var grade string = "B"
+   var marks int = 90
+
+   switch marks {
+      case 90: grade = "A"
+      case 80: grade = "B"
+      case 50,60,70 : grade = "C"
+      default: grade = "D"  
+   }
+
+   switch {
+      case grade == "A" :
+         fmt.Printf("优秀!\n" )    
+      case grade == "B", grade == "C" :
+         fmt.Printf("良好\n" )      
+      case grade == "D" :
+         fmt.Printf("及格\n" )      
+      case grade == "F":
+         fmt.Printf("不及格\n" )
+      default:
+         fmt.Printf("差\n" );
+   }
+   fmt.Printf("你的等级是 %s\n", grade );      
+}
+优秀!
+你的等级是 A
+
+
+
+### Type Switch
+switch 语句还可以被用于 type-switch 来判断某个 interface 变量中实际存储的变量类型。
+
+Type Switch 语法格式如下：
+
+switch x.(type){
+    case type:
+       statement(s);      
+    case type:
+       statement(s); 
+    /* 你可以定义任意个数的case */
+    default: /* 可选 */
+       statement(s);
+}
+
+
+package main
+
+import "fmt"
+
+func main() {
+   var x interface{}
+     
+   switch i := x.(type) {
+      case nil:  
+         fmt.Printf(" x 的类型 :%T",i)                
+      case int:  
+         fmt.Printf("x 是 int 型")                      
+      case float64:
+         fmt.Printf("x 是 float64 型")          
+      case func(int) float64:
+         fmt.Printf("x 是 func(int) 型")                      
+      case bool, string:
+         fmt.Printf("x 是 bool 或 string 型" )      
+      default:
+         fmt.Printf("未知型")    
+   }  
+}
+x 的类型 :<nil>
+
+### fallthrough
+ fallthrough 会强制执行后面的 case 语句，fallthrough 不会判断下一条 case 的表达式结果是否为 true。
+ 
+ 
+package main
+
+import "fmt"
+
+func main() {
+
+    switch {
+    case false:
+            fmt.Println("1、case 条件语句为 false")
+            fallthrough
+    case true:
+            fmt.Println("2、case 条件语句为 true")
+            fallthrough
+    case false:
+            fmt.Println("3、case 条件语句为 false")
+            fallthrough
+    case true:
+            fmt.Println("4、case 条件语句为 true")
+    case false:
+            fmt.Println("5、case 条件语句为 false")
+            fallthrough
+    default:
+            fmt.Println("6、默认 case")
+    }
+}
+
+2、case 条件语句为 true
+3、case 条件语句为 false
+4、case 条件语句为 true
+
+这里只对第一个串串管用，之间断掉就没用了
+
+如果想要执行多个 case，需要使用 fallthrough 关键字，也可用 break 终止。
+switch{
+    case 1:
+    ...
+    if(...){
+        break
+    }
+
+    fallthrough // 此时switch(1)会执行case1和case2，但是如果满足if条件，则只执行case1
+
+    case 2:
+    ...
+    case 3:
+}
+
+switch 的 default 不论放在哪都是最后执行
+
+### Go 语言 select 语句
+
+https://www.runoob.com/go/go-select-statement.html
+
+select 是 Go 中的一个控制结构，类似于 switch 语句。
+select 语句会监听所有指定的通道上的操作，一旦其中一个通道准备好就会执行相应的代码块。
+select 语句只能用于通道操作，每个 case 必须是一个通道操作，要么是发送要么是接收。
+
+如果多个通道都准备好，那么 select 语句会随机选择一个通道执行。
+如果所有通道都没有准备好，那么执行 default 块中的代码。
+
+
+select {
+  case <- channel1:
+    // 执行的代码
+  case value := <- channel2:
+    // 执行的代码
+  case channel3 <- value:
+    // 执行的代码
+
+    // 你可以定义任意数量的 case
+
+  default:
+    // 所有通道都没有准备好，执行的代码
+}
+
+以下描述了 select 语句的语法：
+
+每个 case 都必须是一个通道
+所有 channel 表达式都会被求值
+所有被发送的表达式都会被求值
+如果任意某个通道可以进行，它就执行，其他被忽略。
+如果有多个 case 都可以运行，select 会随机公平地选出一个执行，其他不会执行。
+否则：
+如果有 default 子句，则执行该语句。
+如果没有 default 子句，select 将阻塞，直到某个通道可以运行；Go 不会重新对 channel 或值进行求值。
+
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+
+    c1 := make(chan string)
+    c2 := make(chan string)
+
+    go func() {
+        time.Sleep(1 * time.Second)
+        c1 <- "one"
+    }()
+    go func() {
+        time.Sleep(2 * time.Second)
+        c2 <- "two"
+    }()
+
+    for i := 0; i < 2; i++ {
+        select {
+        case msg1 := <-c1:
+            fmt.Println("received", msg1)
+        case msg2 := <-c2:
+            fmt.Println("received", msg2)
+        }
+    }
+}
+
+received one
+received two
+
+select 语句等待两个通道的数据。如果接收到 c1 的数据，就会打印 "received one"；如果接收到 c2 的数据，就会打印 "received two"。
+
+以下实例中，我们定义了两个通道，并启动了两个协程（Goroutine）从这两个通道中获取数据。
+
+在 main 函数中，我们使用 select 语句在这两个通道中进行非阻塞的选择，
+如果两个通道都没有可用的数据，就执行 default 子句中的语句。
+
+
+以下实例执行后会不断地从两个通道中获取到的数据，当两个通道都没有可用的数据时，会输出 "no message received"。
+package main
+
+import "fmt"
+
+func main() {
+  // 定义两个通道
+  ch1 := make(chan string)
+  ch2 := make(chan string)
+
+  // 启动两个 goroutine，分别从两个通道中获取数据
+  go func() {
+    for {
+      ch1 <- "from 1"
+    }
+  }()
+  go func() {
+    for {
+      ch2 <- "from 2"
+    }
+  }()
+
+  // 使用 select 语句非阻塞地从两个通道中获取数据
+  for {
+    select {
+    case msg1 := <-ch1:
+      fmt.Println(msg1)
+    case msg2 := <-ch2:
+      fmt.Println(msg2)
+    default:
+      // 如果两个通道都没有可用的数据，则执行这里的语句
+      fmt.Println("no message received")
+    }
+  }
+}
+
+select 会循环检测条件，如果有满足则执行并退出，否则一直循环检测。
+https://www.runoob.com/go/go-select-statement.html 可以看下评论区 //todo
+示例代码：https://play.golang.org/p/abKvSe-Nn30
+select 是随机执行的不是循环检测，是为了避免饥饿问题，
+
+package main
+
+import (
+   "fmt"   "time")
+
+func Chann(ch chan int, stopCh chan bool) {
+   for j := 0; j < 10; j++ {
+      ch <- j
+      time.Sleep(time.Second)
+   }
+   stopCh <- true}
+
+func main() {
+
+   ch := make(chan int)
+   c := 0   stopCh := make(chan bool)
+
+   go Chann(ch, stopCh)
+
+   for {
+      select {
+      case c = <-ch:
+         fmt.Println("Receive C", c)
+      case s := <-ch:
+         fmt.Println("Receive S", s)
+      case _ = <-stopCh:
+         goto end
+      }
+   }
+end:
+}
+
+
+import 语句导入了需要使用的包，其中包括 fmt 和 time。
+
+Chann 函数是一个并发的 goroutine 函数。它接受两个参数：一个是整型类型的通道 ch，另一个是布尔类型的通道 stopCh。在函数中，使用一个循环向 ch 通道发送数字，并使用 time.Sleep 函数暂停一秒钟。
+
+main 函数是程序的入口函数。
+
+在 main 函数中，首先创建了一个整型类型的通道 ch，用于接收数字。
+
+c 是一个整型变量，用于存储从 ch 通道接收到的数字。
+
+stopCh 是一个布尔类型的通道，用于通知程序停止运行的信号。
+
+使用 go 关键字启动一个新的 goroutine，调用 Chann 函数并传递 ch 和 stopCh 通道。
+
+使用 select 语句，不断地监听多个通道的数据
+当 ch 通道接收到数据时，将数据赋值给变量 c 并打印出来。
+当 ch 通道接收到另一个数据时，将数据赋值给变量 s 并打印出来
+。当 stopCh 通道接收到数据时，会执行 goto 语句跳转到标签 end，从而结束程序的执行。
+
+end 标签是一个程序结束的标记。
+
+总体而言，这段代码创建了两个 goroutine，
+一个用于向 ch 通道发送数字，另一个在 main 函数中使用 select 语句监听多个通道的数据，
+并对接收到的数据进行处理和打印。程序在接收到 stopCh 通道的数据后结束执行。
+
+请注意，使用 goto 语句是一种控制流的方式，但在实际的代码编写中，通常应避免过多使用 goto 语句，以保持代码的可读性和可维护性。
+
+
+# Day 8 循环语句1
+
+循环类型	描述
+for 循环	重复执行语句块 https://www.runoob.com/go/go-for-loop.html
+循环嵌套	在 for 循环中嵌套一个或多个 for 循环 https://www.runoob.com/go/go-nested-loops.html
+
+## for 循环
+执行指定次数的循环
+### 有 3 种形式，
+
+只有其中的一种使用分号。
+
+- 和 C 语言的 for 一样：
+for init; condition; post { }
+- 和 C 的 while 一样：
+for condition { }
+- 和 C 的 for(;;) 一样：
+for { }
+
+
+init： 一般为赋值表达式，给控制变量赋初值；
+condition： 关系表达式或逻辑表达式，循环控制条件；
+post： 一般为赋值表达式，给控制变量增量或减量。
+
+
+### for语句执行过程如下：
+
+1、先对表达式 1 赋初值；
+
+2、判别赋值表达式 init 是否满足给定条件，
+若其值为真，满足循环条件，则执行循环体内语句，
+然后执行 post，进入第二次循环，再判别 condition；
+否则判断 condition 的值为假，不满足条件，就终止for循环，执行循环体外语句。
+
+for 循环的 range 格式可以对 slice、map、数组、字符串等进行迭代循环。格式如下：
+
+for key, value := range oldMap {
+    newMap[key] = value
+}
+
+key 和 value 是可以省略。
+
+如果只想读取 key，格式如下：
+for key := range oldMap
+for key, _ := range oldMap
+
+如果只想读取 value，格式如下：
+for _, value := range oldMap
+
+### 四个
+例子可以自己手打一下
+https://www.runoob.com/go/go-for-loop.html
+
+#### 计算 1 到 10 的数字之和：
+package main
+
+import "fmt"
+
+func main() {
+   sum := 0
+      for i := 0; i <= 10; i++ {
+         sum += i
+      }
+   fmt.Println(sum)
+}
+
+###  sum 小于 10 的时候计算 sum 自相加后的值：
+init 和 post 参数是可选的，我们可以直接省略它，类似 While 语句
+package main
+
+import "fmt"
+
+func main() {
+   sum := 1
+   for ; sum <= 10; {
+      sum += sum
+   }
+   fmt.Println(sum)
+
+   // 这样写也可以，更像 While 语句形式
+   for sum <= 10{
+      sum += sum
+   }
+   fmt.Println(sum)
+}
+
+还差最后俩 https://www.runoob.com/go/go-for-loop.html 
+
+
+### slice
+在编程中，Slice（切片）是一种动态数组的抽象数据类型。Slice 提供了对底层数组的引用，并提供了一组操作函数来方便地操作数组。
+
+Slice 由三个主要部分组成：
+
+指向底层数组的指针。
+Slice 的长度，即当前 Slice 中的元素数量。
+Slice 的容量，即底层数组中可访问的元素数量。
+Slice 可以动态地增长和缩小，因此非常灵活。当你向 Slice 中添加元素时，
+如果超过了当前容量，Slice 会自动扩容，底层的数组也会重新分配更大的内存空间。
+这使得 Slice 非常适用于处理动态大小的数据集合。
+
+在 Go 语言中。它是基于数组的一种高级抽象，提供了方便的操作和灵活的大小调整能力
+在使用 Slice 时，你可以使用索引访问和修改元素，
+也可以使用内置的函数来执行各种操作，如追加、复制、切割等。
+
+package main
+
+import "fmt"
+
+func main() {
+   // 创建一个 Slice
+   s := []int{1, 2, 3, 4, 5}
+
+   // 使用索引访问和修改元素
+   fmt.Println(s[0]) // 输出: 1
+   s[2] = 10
+   fmt.Println(s) // 输出: [1 2 10 4 5]
+
+   // 使用内置函数操作 Slice
+   s = append(s, 6) // 追加元素
+   fmt.Println(s)  // 输出: [1 2 10 4 5 6]
+
+   // 切割 Slice
+   subSlice := s[1:4]
+   fmt.Println(subSlice) // 输出: [2 10 4]
+}
+
+# Day 9 循环语句2
+
+GO 语言支持以下几种循环控制语句：
+控制语句	描述
+break 语句	经常用于中断当前 for 循环或跳出 switch 语句 https://www.runoob.com/go/go-break-statement.html 
+continue 语句	跳过当前循环的剩余语句，然后继续进行下一轮循环。 https://www.runoob.com/go/go-continue-statement.html
+goto 语句	将控制转移到被标记的语句。https://www.runoob.com/go/go-goto-statement.html
+
+## 无限循环
+如果循环中条件语句永远不为 false 则会进行无限循环，我们可以通过 for 循环语句中只设置一个条件表达式来执行无限循环：
+package main
+
+import "fmt"
+
+func main() {
+    for true  {
+        fmt.Printf("这是无限循环。\n");
+    }

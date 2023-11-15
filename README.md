@@ -28,6 +28,12 @@ Day4 - 08112023
 [] 每天上线第一件事 练习一个小小的 位运算符 
 # 闲聊板
 
+20231112 看trend发现的好东西
+https://github.com/krahets/hello-algo 
+动态学习复杂的东西 https://www.totuma.cn/algorithms/stack-queue/queue-link-head-node.html
+go语言：https://github.com/krahets/hello-algo/releases
+=======
+
 好希望自己每天上线打完卡都看一下trend
 https://github.com/trending 
 
