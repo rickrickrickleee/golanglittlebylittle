@@ -1256,5 +1256,211 @@ func main() {
 select 会循环检测条件，如果有满足则执行并退出，否则一直循环检测。
 https://www.runoob.com/go/go-select-statement.html 可以看下评论区 //todo
 示例代码：https://play.golang.org/p/abKvSe-Nn30
+select 是随机执行的不是循环检测，是为了避免饥饿问题，
 
-# Day 8 循环语句
+package main
+
+import (
+   "fmt"   "time")
+
+func Chann(ch chan int, stopCh chan bool) {
+   for j := 0; j < 10; j++ {
+      ch <- j
+      time.Sleep(time.Second)
+   }
+   stopCh <- true}
+
+func main() {
+
+   ch := make(chan int)
+   c := 0   stopCh := make(chan bool)
+
+   go Chann(ch, stopCh)
+
+   for {
+      select {
+      case c = <-ch:
+         fmt.Println("Receive C", c)
+      case s := <-ch:
+         fmt.Println("Receive S", s)
+      case _ = <-stopCh:
+         goto end
+      }
+   }
+end:
+}
+
+
+import 语句导入了需要使用的包，其中包括 fmt 和 time。
+
+Chann 函数是一个并发的 goroutine 函数。它接受两个参数：一个是整型类型的通道 ch，另一个是布尔类型的通道 stopCh。在函数中，使用一个循环向 ch 通道发送数字，并使用 time.Sleep 函数暂停一秒钟。
+
+main 函数是程序的入口函数。
+
+在 main 函数中，首先创建了一个整型类型的通道 ch，用于接收数字。
+
+c 是一个整型变量，用于存储从 ch 通道接收到的数字。
+
+stopCh 是一个布尔类型的通道，用于通知程序停止运行的信号。
+
+使用 go 关键字启动一个新的 goroutine，调用 Chann 函数并传递 ch 和 stopCh 通道。
+
+使用 select 语句，不断地监听多个通道的数据
+当 ch 通道接收到数据时，将数据赋值给变量 c 并打印出来。
+当 ch 通道接收到另一个数据时，将数据赋值给变量 s 并打印出来
+。当 stopCh 通道接收到数据时，会执行 goto 语句跳转到标签 end，从而结束程序的执行。
+
+end 标签是一个程序结束的标记。
+
+总体而言，这段代码创建了两个 goroutine，
+一个用于向 ch 通道发送数字，另一个在 main 函数中使用 select 语句监听多个通道的数据，
+并对接收到的数据进行处理和打印。程序在接收到 stopCh 通道的数据后结束执行。
+
+请注意，使用 goto 语句是一种控制流的方式，但在实际的代码编写中，通常应避免过多使用 goto 语句，以保持代码的可读性和可维护性。
+
+
+# Day 8 循环语句1
+
+循环类型	描述
+for 循环	重复执行语句块 https://www.runoob.com/go/go-for-loop.html
+循环嵌套	在 for 循环中嵌套一个或多个 for 循环 https://www.runoob.com/go/go-nested-loops.html
+
+## for 循环
+执行指定次数的循环
+### 有 3 种形式，
+
+只有其中的一种使用分号。
+
+- 和 C 语言的 for 一样：
+for init; condition; post { }
+- 和 C 的 while 一样：
+for condition { }
+- 和 C 的 for(;;) 一样：
+for { }
+
+
+init： 一般为赋值表达式，给控制变量赋初值；
+condition： 关系表达式或逻辑表达式，循环控制条件；
+post： 一般为赋值表达式，给控制变量增量或减量。
+
+
+### for语句执行过程如下：
+
+1、先对表达式 1 赋初值；
+
+2、判别赋值表达式 init 是否满足给定条件，
+若其值为真，满足循环条件，则执行循环体内语句，
+然后执行 post，进入第二次循环，再判别 condition；
+否则判断 condition 的值为假，不满足条件，就终止for循环，执行循环体外语句。
+
+for 循环的 range 格式可以对 slice、map、数组、字符串等进行迭代循环。格式如下：
+
+for key, value := range oldMap {
+    newMap[key] = value
+}
+
+key 和 value 是可以省略。
+
+如果只想读取 key，格式如下：
+for key := range oldMap
+for key, _ := range oldMap
+
+如果只想读取 value，格式如下：
+for _, value := range oldMap
+
+### 四个
+例子可以自己手打一下
+https://www.runoob.com/go/go-for-loop.html
+
+#### 计算 1 到 10 的数字之和：
+package main
+
+import "fmt"
+
+func main() {
+   sum := 0
+      for i := 0; i <= 10; i++ {
+         sum += i
+      }
+   fmt.Println(sum)
+}
+
+###  sum 小于 10 的时候计算 sum 自相加后的值：
+init 和 post 参数是可选的，我们可以直接省略它，类似 While 语句
+package main
+
+import "fmt"
+
+func main() {
+   sum := 1
+   for ; sum <= 10; {
+      sum += sum
+   }
+   fmt.Println(sum)
+
+   // 这样写也可以，更像 While 语句形式
+   for sum <= 10{
+      sum += sum
+   }
+   fmt.Println(sum)
+}
+
+还差最后俩 https://www.runoob.com/go/go-for-loop.html 
+
+
+### slice
+在编程中，Slice（切片）是一种动态数组的抽象数据类型。Slice 提供了对底层数组的引用，并提供了一组操作函数来方便地操作数组。
+
+Slice 由三个主要部分组成：
+
+指向底层数组的指针。
+Slice 的长度，即当前 Slice 中的元素数量。
+Slice 的容量，即底层数组中可访问的元素数量。
+Slice 可以动态地增长和缩小，因此非常灵活。当你向 Slice 中添加元素时，
+如果超过了当前容量，Slice 会自动扩容，底层的数组也会重新分配更大的内存空间。
+这使得 Slice 非常适用于处理动态大小的数据集合。
+
+在 Go 语言中。它是基于数组的一种高级抽象，提供了方便的操作和灵活的大小调整能力
+在使用 Slice 时，你可以使用索引访问和修改元素，
+也可以使用内置的函数来执行各种操作，如追加、复制、切割等。
+
+package main
+
+import "fmt"
+
+func main() {
+   // 创建一个 Slice
+   s := []int{1, 2, 3, 4, 5}
+
+   // 使用索引访问和修改元素
+   fmt.Println(s[0]) // 输出: 1
+   s[2] = 10
+   fmt.Println(s) // 输出: [1 2 10 4 5]
+
+   // 使用内置函数操作 Slice
+   s = append(s, 6) // 追加元素
+   fmt.Println(s)  // 输出: [1 2 10 4 5 6]
+
+   // 切割 Slice
+   subSlice := s[1:4]
+   fmt.Println(subSlice) // 输出: [2 10 4]
+}
+
+# Day 9 循环语句2
+
+GO 语言支持以下几种循环控制语句：
+控制语句	描述
+break 语句	经常用于中断当前 for 循环或跳出 switch 语句 https://www.runoob.com/go/go-break-statement.html 
+continue 语句	跳过当前循环的剩余语句，然后继续进行下一轮循环。 https://www.runoob.com/go/go-continue-statement.html
+goto 语句	将控制转移到被标记的语句。https://www.runoob.com/go/go-goto-statement.html
+
+## 无限循环
+如果循环中条件语句永远不为 false 则会进行无限循环，我们可以通过 for 循环语句中只设置一个条件表达式来执行无限循环：
+package main
+
+import "fmt"
+
+func main() {
+    for true  {
+        fmt.Printf("这是无限循环。\n");
+    }
