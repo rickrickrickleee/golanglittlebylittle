@@ -52,9 +52,19 @@
 
 ### 11.13日
 
-1.nuxt中useState的使用，useState属于composeable里面定义的全局方法，是一种全局共享的==响应式==数据，也就是说：使用useState返回接受的变量是一个ref变量。可以做到路由之前数据的共享，代替pinia。
+1.nuxt中useState的使用，useState属于composeable里面定义的全局方法，是一种全局共享的==响应式==数据，也就是说：使用useState返回接受的变量是一个ref变量。可以做到路由之前数据的共享，代替pinia。（18）
 
 2.头部信息设定 useHead
 
 3.definePageMeta & 中间件& layouts，自定页面的布局和中间件
+
+### 11.14日
+
+1.middleware的使用，全局拦截做数据补偿（18）
+
+### 11.15日
+
+1.appid授权访问（白名单）（19）
+
+2.实现接口关于post和get请求的封装和处理
 
