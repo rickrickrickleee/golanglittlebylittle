@@ -1406,7 +1406,76 @@ func main() {
 }
 
 还差最后俩 https://www.runoob.com/go/go-for-loop.html 
+### For-each range 循环
+对字符串、数组、切片等进行迭代输出元素。
+package main
+import "fmt"
 
+func main() {
+   strings := []string{"google", "runoob"}
+   for i, s := range strings {
+      fmt.Println(i, s)
+   }
+
+
+   numbers := [6]int{1, 2, 3, 5}
+   for i,x:= range numbers {
+      fmt.Printf("第 %d 位 x 的值 = %d\n", i,x)
+   }  
+}
+
+0 google
+1 runoob
+第 0 位 x 的值 = 1
+第 1 位 x 的值 = 2
+第 2 位 x 的值 = 3
+第 3 位 x 的值 = 5
+第 4 位 x 的值 = 0
+第 5 位 x 的值 = 0
+
+for 循环的 range 格式可以省略 key 和 value，如下实例：
+
+package main
+import "fmt"
+
+func main() {
+    map1 := make(map[int]float32)
+    map1[1] = 1.0
+    map1[2] = 2.0
+    map1[3] = 3.0
+    map1[4] = 4.0
+   
+    // 读取 key 和 value
+    
+    for key, value := range map1 {
+      fmt.Printf("key is: %d - value is: %f\n", key, value)
+    }
+
+    // 读取 key
+    
+    for key := range map1 {
+      fmt.Printf("key is: %d\n", key)
+    }
+
+    // 读取 value
+    
+    for _, value := range map1 {
+      fmt.Printf("value is: %f\n", value)
+    }
+}
+
+key is: 4 - value is: 4.000000
+key is: 1 - value is: 1.000000
+key is: 2 - value is: 2.000000
+key is: 3 - value is: 3.000000
+key is: 1
+key is: 2
+key is: 3
+key is: 4
+value is: 1.000000
+value is: 2.000000
+value is: 3.000000
+value is: 4.000000
 
 ### slice
 在编程中，Slice（切片）是一种动态数组的抽象数据类型。Slice 提供了对底层数组的引用，并提供了一组操作函数来方便地操作数组。
@@ -1464,3 +1533,420 @@ func main() {
     for true  {
         fmt.Printf("这是无限循环。\n");
     }
+}
+要停止无限循环，可以在命令窗口按下ctrl-c 。
+package main
+
+import "fmt"
+
+func main() {
+   sum := 0
+   for {
+      sum++ // 无限循环下去
+   }
+   fmt.Println(sum) // 无法输出
+}
+  
+
+## Go 语言循环嵌套
+
+for [condition |  ( init; condition; increment ) | Range]
+{
+   for [condition |  ( init; condition; increment ) | Range]
+   {
+      statement(s);
+   }
+   statement(s);
+}
+
+循环嵌套来输出 2 到 100 间的素数：
+
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var i, j int
+
+   for i=2; i < 100; i++ {
+      for j=2; j <= (i/j); j++ {
+         if(i%j==0) {
+            break; // 如果发现因子，则不是素数
+         }
+      }
+      if(j > (i/j)) {
+         fmt.Printf("%d  是素数\n", i);
+      }
+   }  
+}
+
+2  是素数
+3  是素数
+5  是素数
+7  是素数
+11  是素数
+13  是素数
+17  是素数
+19  是素数
+23  是素数
+29  是素数
+31  是素数
+37  是素数
+41  是素数
+43  是素数
+47  是素数
+53  是素数
+59  是素数
+61  是素数
+67  是素数
+71  是素数
+73  是素数
+79  是素数
+83  是素数
+89  是素数
+97  是素数
+    
+九九乘法表：
+package main 
+
+import "fmt"
+
+func main() {
+    for m := 1; m < 10; m++ {
+    /*    fmt.Printf("第%d次：\n",m) */
+        for n := 1; n <= m; n++ {
+            fmt.Printf("%dx%d=%d ",n,m,m*n)
+        }
+        fmt.Println("")
+    }
+}
+
+## break 语句
+终止当前循环或者 switch 语句的执行
+
+用于循环语句中跳出循环，并开始执行循环之后的语句。
+break 在 switch 语句中在执行一条 case 后跳出语句的作用。
+break 可应用在 select 语句中。
+在多重循环中，可以**用标号 label 标出**想 break 的循环。
+
+package main
+
+import "fmt"
+
+func main() {
+    for i := 0; i < 10; i++ {
+        if i == 5 {
+            break // 当 i 等于 5 时跳出循环
+        }
+        fmt.Println(i)
+    }
+}
+
+0
+1
+2
+3
+4
+
+在变量 a 大于 15 的时候跳出循环：
+
+package main
+
+import "fmt"
+
+func main() {
+   /* 局部变量 */
+   var a int = 10
+   
+   for a < 20 {
+      fmt.Printf("a 的值为 : %d\n", a);
+      a++
+      if a > 15 {
+         /* a 大于 15 时使用 break 语句跳出循环 */
+         break
+      }
+   }
+   
+}
+a 的值为 : 10
+a 的值为 : 11
+a 的值为 : 12
+a 的值为 : 13
+a 的值为 : 14
+a 的值为 : 15
+
+多重循环，演示了使用标记和不使用标记的区别：
+
+package main
+
+import "fmt"
+
+func main() {
+
+   // 不使用标记
+   fmt.Println("---- break ----")
+   for i := 1; i <= 3; i++ {
+      fmt.Printf("i: %d\n", i)
+      for i2 := 11; i2 <= 13; i2++ {
+         fmt.Printf("i2: %d\n", i2)
+         break
+      }
+   }
+
+   // 使用标记
+   fmt.Println("---- break label ----")
+   re:
+      for i := 1; i <= 3; i++ {
+         fmt.Printf("i: %d\n", i)
+         for i2 := 11; i2 <= 13; i2++ {
+         fmt.Printf("i2: %d\n", i2)
+         break re
+      }
+   }
+}
+
+---- break ----
+i: 1
+i2: 11
+i: 2
+i2: 11
+i: 3
+i2: 11
+---- break label ----
+i: 1
+i2: 11    
+
+在 switch 语句中使用 break：
+import "fmt"
+
+func main() {
+    day := "Tuesday"
+    switch day {
+    case "Monday":
+        fmt.Println("It's Monday.")
+    case "Tuesday":
+        fmt.Println("It's Tuesday.")
+        break // 跳出 switch 语句
+    case "Wednesday":
+        fmt.Println("It's Wednesday.")
+    }
+}
+
+select：
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func main() {
+    ch1 := make(chan int)
+    ch2 := make(chan int)
+
+    go func() {
+        time.Sleep(2 * time.Second)
+        ch1 <- 1
+    }()
+
+    go func() {
+        time.Sleep(1 * time.Second)
+        ch2 <- 2
+    }()
+
+    select {
+    case <-ch1:
+        fmt.Println("Received from ch1.")
+    case <-ch2:
+        fmt.Println("Received from ch2.")
+        break // 跳出 select 语句
+    }
+}
+
+Received from ch2.
+
+*没看懂*解释
+段代码使用了goroutine和channel来实现并发通信。在main函数中，首先创建了两个整型的通道ch1和ch2。
+
+接下来，通过go关键字创建了两个匿名函数作为goroutine。第一个匿名函数会在2秒后向ch1通道发送值1，而第二个匿名函数会在1秒后向ch2通道发送值2。
+
+然后，在select语句中使用了两个case分支，分别监听ch1和ch2通道。select语句会等待这两个通道中的数据到达，并执行对应的分支。
+
+由于ch2通道的数据会先到达（1秒后），因此第二个case分支会被执行，打印出"Received from ch2."的消息。
+
+在这个例子中，break语句被用于跳出select语句，因此程序会在打印消息后结束执行。
+
+总结起来，这段代码创建了两个goroutine，在不同的时间点向两个通道发送数据，并使用select语句监听通道并执行相应的操作。在本例中，先收到数据的通道会触发相应的case分支执行，而break语句用于跳出select语句。
+
+*看懂了*
+
+break 语句在 select 语句中的应用是相对特殊的。由于 select 语句的特性，break 语句并不能直接用于跳出 select 语句本身，因为 select 语句是非阻塞的，它会一直等待所有的通信操作都准备就绪。如果需要提前结束 select 语句的执行，可以使用 return 或者 goto 语句来达到相同的效果。
+
+以下实例，展示了在 select 语句中使用 return 来提前结束执行的情况：
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func process(ch chan int) {
+    for {
+        select {
+        case val := <-ch:
+            fmt.Println("Received value:", val)
+            // 执行一些逻辑
+            if val == 5 {
+                return // 提前结束 select 语句的执行
+            }
+        default:
+            fmt.Println("No value received yet.")
+            time.Sleep(500 * time.Millisecond)
+        }
+    }
+}
+
+func main() {
+    ch := make(chan int)
+
+    go process(ch)
+
+    time.Sleep(2 * time.Second)
+    ch <- 1
+    time.Sleep(1 * time.Second)
+    ch <- 3
+    time.Sleep(1 * time.Second)
+    ch <- 5
+    time.Sleep(1 * time.Second)
+    ch <- 7
+
+    time.Sleep(2 * time.Second)
+}
+
+以上实例中，process 函数在一个无限循环中使用 select 语句等待通道 ch 上的数据。当接收到数据时，会执行一些逻辑。当接收到的值等于 5 时，使用 return 提前结束 select 语句的执行。
+
+输出结果：
+
+No value received yet.
+No value received yet.
+Received value: 1
+No value received yet.
+Received value: 3
+No value received yet.
+Received value: 5
+
+*没看懂*解释
+在main函数中，首先创建了一个整型通道ch。然后，通过go关键字启动了一个goroutine，其中调用了process函数，并将通道ch作为参数传递进去。
+
+process函数是一个无限循环，在每次循环中使用select语句监听通道ch。在select语句中，有两个case分支：
+
+第一个case分支是对ch通道的接收操作。当通道中有值可接收时，会将接收到的值打印出来，并执行一些逻辑。在这个例子中，如果接收到的值等于5，那么会使用return语句提前结束select语句的执行。
+第二个case分支是默认分支（default）。如果通道中没有值可接收，那么default分支会被执行，打印出"No value received yet."的消息，并通过time.Sleep函数暂停500毫秒。
+回到main函数，接下来通过time.Sleep函数分别等待了2秒、1秒、1秒和1秒，然后向通道ch发送了四个值：1、3、5和7。
+
+在process函数的循环中，由于ch通道中有值可接收，因此第一个case分支会被执行。这样，在接收到值为5时，process函数使用return语句提前结束了select语句的执行。
+
+最后，main函数通过time.Sleep函数等待了2秒，以保证process函数有足够的时间执行完毕。
+
+总结起来，这段代码展示了如何使用select语句和channel实现非阻塞的接收操作。通过在select语句中使用default分支，可以在通道没有值可接收时执行一些其他的逻辑，而不会阻塞整个程序的执行。
+
+通过使用 return，我们可以在 select 语句中提前终止执行，并返回到调用者的代码中。
+
+需要注意的是，使用 return 语句会立即终止当前的函数执行，所以请根据实际需求来决定在 select 语句中使用何种方式来提前结束执行。
+
+## continue
+ continue 不是跳出循环，而是跳过当前循环执行下一次循环语句
+ for 循环中，执行 continue 语句会触发 for 增量语句的执行。
+在多重循环中，可以用标号 label 标出想 continue 的循环。
+
+在变量 a 等于 15 的时候**跳过本次循环**执行下一次循环：
+
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var a int = 10
+
+   /* for 循环 */
+   for a < 20 {
+      if a == 15 {
+         /* 跳过此次循环 */
+         a = a + 1;
+         continue;
+      }
+      fmt.Printf("a 的值为 : %d\n", a);
+      a++;    
+   }  
+}
+
+a 的值为 : 10
+a 的值为 : 11
+a 的值为 : 12
+a 的值为 : 13
+a 的值为 : 14
+a 的值为 : 16
+a 的值为 : 17
+a 的值为 : 18
+a 的值为 : 19
+
+多重循环，演示了使用标记和不使用标记的区别：
+package main
+
+import "fmt"
+
+func main() {
+
+    // 不使用标记
+    fmt.Println("---- continue ---- ")
+    for i := 1; i <= 3; i++ {
+        fmt.Printf("i: %d\n", i)
+            for i2 := 11; i2 <= 13; i2++ {
+                fmt.Printf("i2: %d\n", i2)
+                continue
+            }
+    }
+
+    // 使用标记
+    fmt.Println("---- continue label ----")
+    re:
+        for i := 1; i <= 3; i++ {
+            fmt.Printf("i: %d\n", i)
+                for i2 := 11; i2 <= 13; i2++ {
+                    fmt.Printf("i2: %d\n", i2)
+                    continue re
+                }
+        }
+}
+
+---- continue ---- 
+i: 1
+i2: 11
+i2: 12
+i2: 13
+i: 2
+i2: 11
+i2: 12
+i2: 13
+i: 3
+i2: 11
+i2: 12
+i2: 13
+---- continue label ----
+i: 1
+i2: 11
+i: 2
+i2: 11
+i: 3
+i2: 11
+
+解释
+在第一个部分中，使用了continue语句而没有标记。代码执行进入第一个for循环，i的值从1到3依次递增。在每次循环中，有一个内部的for循环，i2的值从11到13递增。在内部循环中，continue语句被执行，导致内部循环直接跳到下一次迭代。因此，每次迭代只打印出了i的值，而i2的循环只执行了一次。
+
+在第二个部分中，使用了带有标记的continue语句。在外部for循环之前，有一个标记re。在内部循环中，continue语句被执行时，它指定了标记re，表示继续外部循环的下一次迭代。这样，每次迭代中的内部循环都会被重新开始，从i2的初始值11开始，直到13。因此，每次迭代都会打印出i的值，并执行完整的内部循环。
+
+总结起来，continue语句用于跳过当前循环中剩余的代码，并继续下一次循环的执行。当不使用标记时，continue只会跳过当前循环。而使用标记时，continue可以跳过带有标记的循环，并继续执行标记所在的循环的下一次迭代。
+
+# Day 10 必须自己写一个上面的类似的
