@@ -1950,3 +1950,275 @@ i2: 11
 总结起来，continue语句用于跳过当前循环中剩余的代码，并继续下一次循环的执行。当不使用标记时，continue只会跳过当前循环。而使用标记时，continue可以跳过带有标记的循环，并继续执行标记所在的循环的下一次迭代。
 
 # Day 10 必须自己写一个上面的类似的
+## goto 语句 代码块
+
+goto 语句可以无条件地转移到过程中指定的行。
+通常与条件语句配合使用。可用来实现条件转移， 构成循环，跳出循环体等功能。
+在结构化程序设计中一般不主张使用 goto 语句
+
+goto label;
+..
+.
+label: statement;
+
+在变量 a 等于 15 的时候跳过本次循环并回到循环的开始语句 LOOP 处：
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var a int = 10
+
+   /* 循环 */
+   LOOP: for a < 20 {
+      if a == 15 {
+         /* 跳过迭代 */
+         a = a + 1
+         goto LOOP
+      }
+      fmt.Printf("a的值为 : %d\n", a)
+      a++    
+   }  
+}
+a的值为 : 10
+a的值为 : 11
+a的值为 : 12
+a的值为 : 13
+a的值为 : 14
+a的值为 : 16
+a的值为 : 17
+a的值为 : 18
+a的值为 : 19
+
+打印九九乘法表:希望自己也可以写出这样的逻辑
+
+package main 
+
+import "fmt"
+
+func main() {
+    //print9x()
+    gotoTag()
+}
+
+//嵌套for循环打印九九乘法表
+func print9x() {
+    for m := 1; m < 10; m++ {
+        for n := 1; n <= m; n++ {
+          fmt.Printf("%dx%d=%d ",n,m,m*n)
+        }
+        fmt.Println("")
+    }
+}
+
+//for循环配合goto打印九九乘法表
+func gotoTag() {
+    for m := 1; m < 10; m++ {
+    n := 1
+    LOOP: if n <= m {
+        fmt.Printf("%dx%d=%d ",n,m,m*n)
+        n++
+        goto LOOP
+    } else {
+        fmt.Println("")
+    }
+    n++
+    }
+}
+
+## 求 100 内素数，我也来贴一个最终版的：
+（这些人是在刷题吧，应该可以吧脑子通过刷题变灵活）
+// 打印100内的素数
+// 素数定义：在大于1的自然数中，因数只有1和自身的数称为素数。
+func t01_test2() {
+    const RANGE = 100
+    for num := 2; num <= RANGE; num++ {
+        // 当前因数 factor 对应的另一个因数就是 num / factor。
+        // 当前者大于后者时，可以认为所有因数已经分析完毕。
+        for factor := 2; factor <= (num / factor); factor++ {
+            //能除尽，则表示 factor 是 num 的一个因子。那么num就不是素数。
+            if num%factor == 0 {
+                goto NEXT_NUM
+            }
+        }
+        fmt.Printf("%d\t是素数\n", num)
+    NEXT_NUM:
+    }
+}
+
+## 欢迎进入成绩查询系统
+
+package main
+import "fmt"
+import "strconv"
+import "os"
+
+func main(){
+    var score int = 0
+    var fenshu string = "A"
+    fmt.Printf("欢迎进入成绩查询系统\n")
+    ZHU: for true{
+        var xuanzhe int = 0
+        fmt.Println("1.进入成绩查询 2.退出程序")
+        fmt.Printf("请输入序号选择:")
+        fmt.Scanln(&xuanzhe)
+        fmt.Printf("\n")
+        if xuanzhe == 1{
+             goto CHA
+        }
+        if xuanzhe == 2{
+            os.Exit(1)
+        }
+
+    }
+
+    CHA: for true {
+        fmt.Printf("请输入一个学生的成绩:")
+        fmt.Scanln(&score)
+
+        switch {
+            case score >= 90:fenshu = "A"
+
+            case score >= 80&&score < 90:fenshu = "B"
+
+            case score >= 60&&score < 80:fenshu = "C"
+
+            default: fenshu = "D"
+        }
+
+        //fmt.Println(fenshu)
+         var c string  = strconv.Itoa(score)
+        switch{
+            case fenshu == "A":
+                fmt.Printf("你考了%s分,评价为%s,成绩优秀\n",c,fenshu)
+            case fenshu == "B" || fenshu == "C":
+                fmt.Printf("你考了%s分,评价为%s,成绩良好\n",c,fenshu)
+            case fenshu == "D":
+                fmt.Printf("你考了%s分,评价为%s,成绩不合格\n",c,fenshu)
+        }
+        fmt.Printf("\n")
+        goto ZHU
+}
+    //fmt.Println(score)
+}
+
+# Day 10 Go 语言函数 函数定义
+
+函数是基本的代码块，用于执行一个任务。
+
+Go 语言最少有个 main() 函数。
+
+你可以通过函数来划分不同功能，逻辑上每个函数执行的是指定的任务。
+
+函数声明告诉了编译器函数的名称，返回类型，和参数。
+
+Go 语言标准库提供了多种可动用的内置的函数。例如，len() 函数可以接受不同类型参数并返回该类型的长度。如果我们传入的是字符串则返回字符串的长度，如果传入的是数组，则返回数组中包含的元素个数。
+
+Go 语言函数定义格式如下：
+
+func function_name( [parameter list] ) [return_types] {
+   函数体
+}
+
+函数定义解析：
+
+func：函数由 func 开始声明
+function_name：函数名称，参数列表和返回值类型构成了函数签名。
+parameter list：参数列表，参数就像一个占位符，当函数被调用时，你可以将值传递给参数，这个值被称为实际参数。参数列表指定的是参数类型、顺序、及参数个数。参数是可选的，也就是说函数也可以不包含参数。
+return_types：返回类型，函数返回一列值。
+return_types 是该列值的数据类型。
+有些功能不需要返回值，这种情况下 return_types 不是必须的。
+
+函数体：函数定义的代码集合。
+
+max() 函数的代码，该函数传入两个整型参数 num1 和 num2，并返回这两个参数的最大值：
+/* 函数返回两个数的最大值 */
+func max(num1, num2 int) int {
+   /* 声明局部变量 */
+   var result int
+
+   if (num1 > num2) {
+      result = num1
+   } else {
+      result = num2
+   }
+   return result
+}
+
+
+## 函数调用
+
+通过调用该函数来执行指定任务。在 main() 函数中调用 max（）函数
+
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var a int = 100
+   var b int = 200
+   var ret int
+
+   /* 调用函数并返回最大值 */
+   ret = max(a, b)
+
+   fmt.Printf( "最大值是 : %d\n", ret )
+}
+
+/* 函数返回两个数的最大值 */
+func max(num1, num2 int) int {
+   /* 定义局部变量 */
+   var result int
+
+   if (num1 > num2) {
+      result = num1
+   } else {
+      result = num2
+   }
+   return result
+}
+最大值是 : 200
+
+
+## 函数返回多个值
+
+package main
+
+import "fmt"
+
+func swap(x, y string) (string, string) {
+   return y, x
+}
+
+func main() {
+   a, b := swap("Google", "Runoob")
+   fmt.Println(a, b)
+}
+
+Runoob Google
+
+## 函数参数
+
+函数如果使用参数，该变量可称为函数的形参。
+形参就像定义在函数体内的局部变量。
+调用函数，可以通过两种方式来传递参数：
+
+传递类型	描述
+值传递	https://www.runoob.com/go/go-function-call-by-value.html
+值传递是指在调用函数时将实际参数复制一份传递到函数中，
+这样在函数中如果对参数进行修改，将不会影响到实际参数。
+
+引用传递	https://www.runoob.com/go/go-function-call-by-reference.html
+引用传递是指在调用函数时将实际参数的地址传递到函数中，
+那么在函数中对参数所进行的修改，将影响到实际参数。
+默认情况下，Go 语言使用的是值传递，即在调用过程中不会影响到实际参数
+
+## 函数用法
+
+函数用法	描述
+函数作为另外一个函数的实参	函数定义后可作为另外一个函数的实参数传入 https://www.runoob.com/go/go-function-as-values.html
+闭包	闭包是匿名函数，可在动态编程中使用 https://www.runoob.com/go/go-function-closures.html
+方法	方法就是一个包含了接受者的函数https://www.runoob.com/go/go-method.html
+
