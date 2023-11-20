@@ -1,6 +1,10 @@
 # golanglittlebylittle
 xingxing and riri sharing notes on learning go
 
+# 靠谱的tizi
+重要！！！防失联地址 https://github.com/yiyuanjichang/dizhi 
+一年的价格是12，两年20，虽然是支付宝付款但是付给的是国内的农业公司，
+里面连软件都给你准备好，非常贴心，邮箱注册一个protonmail.com然后注册就好
 
 # 学习路线
 ## 入门级
