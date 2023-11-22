@@ -2222,3 +2222,114 @@ Runoob Google
 闭包	闭包是匿名函数，可在动态编程中使用 https://www.runoob.com/go/go-function-closures.html
 方法	方法就是一个包含了接受者的函数https://www.runoob.com/go/go-method.html
 
+# DAY 11 
+
+## 值传递
+
+值传递来调用 swap() 函数：
+程序中使用的是值传递, 所以两个值并没有实现交互
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var a int = 100
+   var b int = 200
+
+   fmt.Printf("交换前 a 的值为 : %d\n", a )
+   fmt.Printf("交换前 b 的值为 : %d\n", b )
+
+   /* 通过调用函数来交换值 */
+   swap(a, b)
+
+   fmt.Printf("交换后 a 的值 : %d\n", a )
+   fmt.Printf("交换后 b 的值 : %d\n", b )
+}
+
+/* 定义相互交换值的函数 */
+func swap(x, y int) int {
+   var temp int
+
+   temp = x /* 保存 x 的值 */
+   x = y    /* 将 y 值赋给 x */
+   y = temp /* 将 temp 值赋给 y*/
+
+   return temp;
+}
+
+交换前 a 的值为 : 100
+交换前 b 的值为 : 200
+交换后 a 的值 : 100
+交换后 b 的值 : 200
+
+a := 100
+b := 200
+a, b = b, a
+// a == 200
+// b == 100
+
+值传递只操作变量对应的值，并不对变量的内容直接做改变，用变量接受一下返回值，对比的效果更明显:
+
+package main
+
+import "fmt"
+
+func main(){
+    var a  int = 100
+    var b  int = 200
+    fmt.Printf("交换前的值a=%d,b=%d\n",a,b)
+    a,b=swap(a,b)
+    fmt.Printf("交换后的值a=%d,b=%d\n",a,b)
+}
+
+func swap(x,y int) (int,int) {
+    x,y = y,x
+    return x,y
+}
+以上代码执行输出结果为：
+
+交换前的值a=100,b=200
+交换后的值a=200,b=100
+
+## 引用传递值
+调用函数时将实际参数的地址传递到函数中，那么在函数中对参数所进行的修改，将影响到实际参数。
+以下我们通过使用引用传递来调用 swap() 函数：
+
+package main
+
+import "fmt"
+
+func main() {
+   /* 定义局部变量 */
+   var a int = 100
+   var b int= 200
+
+   fmt.Printf("交换前，a 的值 : %d\n", a )
+   fmt.Printf("交换前，b 的值 : %d\n", b )
+
+   /* 调用 swap() 函数
+   * &a 指向 a 指针，a 变量的地址
+   * &b 指向 b 指针，b 变量的地址
+   */
+   swap(&a, &b)
+
+   fmt.Printf("交换后，a 的值 : %d\n", a )
+   fmt.Printf("交换后，b 的值 : %d\n", b )
+}
+
+func swap(x *int, y *int) {
+   var temp int
+   temp = *x    /* 保存 x 地址上的值 */
+   *x = *y      /* 将 y 值赋给 x */
+   *y = temp    /* 将 temp 值赋给 y */
+}
+以上代码执行结果为：
+
+交换前，a 的值 : 100
+交换前，b 的值 : 200
+交换后，a 的值 : 200
+交换后，b 的值 : 100
+
+## DAY 12 函数用法
+ 
