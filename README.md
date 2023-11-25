@@ -38,7 +38,7 @@ https://github.com/krahets/hello-algo
 动态学习复杂的东西 https://www.totuma.cn/algorithms/stack-queue/queue-link-head-node.html
 go语言：https://github.com/krahets/hello-algo/releases
 =======
-
+https://github.com/microsoft/generative-ai-for-beginners
 好希望自己每天上线打完卡都看一下trend
 https://github.com/trending 
 
